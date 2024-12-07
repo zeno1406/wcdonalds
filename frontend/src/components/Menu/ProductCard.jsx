@@ -25,23 +25,19 @@ const ProductCard = ({ product }) => {
     <>
       <Card sx={{ 
         display: 'flex',
+        flexDirection: 'column',
         width: '100%',
         backgroundColor: '#FFFFFF',
         borderRadius: '12px',
         overflow: 'hidden',
         mb: 2,
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-        height: '120px'
       }}>
         <CardMedia
           component="img"
           sx={{ 
-            width: 120,
-            height: '100%',
-            objectFit: 'contain',
+            width: '100%',
             backgroundColor: '#f5f5f5',
-            p: 1,
-            flexShrink: 0
           }}
           image={image || 'https://via.placeholder.com/300'}
           alt={name}
@@ -49,10 +45,9 @@ const ProductCard = ({ product }) => {
         
         <Box sx={{ 
           display: 'flex', 
-          flexDirection: 'column', 
-          flexGrow: 1,
+          flexDirection: 'column',
           p: 2,
-          justifyContent: 'space-between'
+          gap: 1
         }}>
           <Box>
             <Typography 
@@ -73,11 +68,8 @@ const ProductCard = ({ product }) => {
               sx={{ 
                 color: 'rgba(0, 0, 0, 0.6)',
                 fontSize: '0.875rem',
-                lineHeight: 1.2,
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden'
+                lineHeight: 1.4,
+                mb: 1
               }}
             >
               {description}
@@ -88,7 +80,7 @@ const ProductCard = ({ product }) => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            mt: 1
+            mt: 'auto'
           }}>
             <Typography 
               variant="h6"
@@ -103,22 +95,20 @@ const ProductCard = ({ product }) => {
 
             <Button
               variant="contained"
+              size="small"
               startIcon={<AddIcon />}
               onClick={handleAddToCart}
-              size="small"
               sx={{
                 backgroundColor: '#FFC72C',
                 color: '#000000',
                 fontWeight: 'bold',
-                fontSize: '0.875rem',
-                px: 2,
-                minWidth: 'auto',
                 '&:hover': {
                   backgroundColor: '#FFB700',
                 },
+                minWidth: '100px'
               }}
             >
-              Add
+              ADD
             </Button>
           </Box>
         </Box>
@@ -128,14 +118,8 @@ const ProductCard = ({ product }) => {
         open={showSnackbar}
         autoHideDuration={2000}
         onClose={() => setShowSnackbar(false)}
-        message={`${name} added to cart!`}
+        message="Item added to cart"
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        sx={{
-          '& .MuiSnackbarContent-root': {
-            backgroundColor: '#4CAF50',
-            color: '#FFFFFF'
-          }
-        }}
       />
     </>
   );

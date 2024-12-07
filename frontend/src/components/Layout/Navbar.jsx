@@ -36,43 +36,61 @@ const Navbar = ({ onCartClick }) => {
       }}
     >
       <Toolbar>
-        <Typography
-          variant="h6"
-          component="div"
-          sx={{ 
-            flexGrow: 1, 
-            cursor: 'pointer',
-            fontWeight: 'bold',
-          }}
+        <Box 
           onClick={() => navigate('/menu')}
+          sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1, 
+            cursor: 'pointer',
+            flexGrow: 1,
+          }}
         >
-          WcDonald's
-        </Typography>
-        
-        <Box>
-          <IconButton 
-            onClick={handleCartClick}
+          <Box
+            component="img"
+            src="/images/wcdonalds.png"
+            alt="WcDonald's Logo"
+            sx={{
+              height: 40,
+              width: 'auto',
+              display: 'block'
+            }}
+          />
+          <Typography
+            variant="h6"
+            component="div"
             sx={{ 
-              color: '#000000',
-              '&:hover': {
-                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+              fontWeight: 'bold',
+              display: { xs: 'none', sm: 'block' }  // Hide text on mobile
+            }}
+          >
+            WcDonald's
+          </Typography>
+        </Box>
+        
+        <IconButton 
+          onClick={handleCartClick}
+          sx={{ 
+            display: { xs: 'none', md: 'flex' },  // Hide on mobile, show on desktop
+            color: '#000000',
+            '&:hover': {
+              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+            }
+          }}
+        >
+          <Badge 
+            badgeContent={getCartCount()} 
+            color="error"
+            sx={{
+              '& .MuiBadge-badge': {
+                backgroundColor: '#DB0007',
+                color: '#FFFFFF',
               }
             }}
           >
-            <Badge 
-              badgeContent={getCartCount()} 
-              color="error"
-              sx={{
-                '& .MuiBadge-badge': {
-                  backgroundColor: '#DB0007',
-                  color: '#FFFFFF',
-                }
-              }}
-            >
-              <CartIcon />
-            </Badge>
-          </IconButton>
-        </Box>
+            <CartIcon />
+          </Badge>
+        </IconButton>
       </Toolbar>
     </AppBar>
   );

@@ -6,18 +6,18 @@ import {
   Divider,
   useTheme,
   useMediaQuery,
-  Paper,
-  Button,
+  Paper, 
   Slide,
   SwipeableDrawer,
+  Badge
 } from '@mui/material';
-import { Close as CloseIcon, ShoppingBag as CheckoutIcon, KeyboardArrowUp as ExpandIcon } from '@mui/icons-material';
+import {ShoppingBag as CartIcon, KeyboardArrowUp as ExpandIcon } from '@mui/icons-material';
 import { useCart } from '../../context/CartContext';
 import CartItem from './CartItem';
 import OrderSummary from './OrderSummary';
 import { useState } from 'react';
 
-const CartDrawer = ({ open, onClose }) => {
+const CartDrawer = () => {
   const { cartItems, getCartTotal } = useCart();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -30,156 +30,121 @@ const CartDrawer = ({ open, onClose }) => {
   // Calculate total quantity of all items
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-  const handleExpandClick = () => {
+  const handleExpandClick = ({open, onClose}) => {
     setIsExpanded(!isExpanded);
   };
+
+  const cartContent = (
+    <>
+      <Box
+        sx={{
+          p: 2,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderBottom: '1px solid rgba(0, 0, 0, 0.12)'
+        }}
+      >
+        <Typography variant="h6" fontWeight="bold">
+          Your Cart
+        </Typography>
+      </Box>
+
+      <Box sx={{ 
+        flexGrow: 1, 
+        overflowY: 'auto',
+        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2
+      }}>
+        {cartItems.length === 0 ? (
+          <Typography variant="body1" color="text.secondary" align="center">
+            Your cart is empty.
+          </Typography>
+        ) : (
+          cartItems.map((item) => (
+            <CartItem key={item.id} item={item} />
+          ))
+        )}
+      </Box>
+
+      {cartItems.length > 0 && (
+        <>
+          <Divider />
+          <OrderSummary subtotal={subtotal} tax={tax} total={total} />
+        </>
+      )}
+    </>
+  );
 
   if (isMobile) {
     return (
       <>
-        {/* Bottom Total Bar */}
-        <Slide direction="up" in={cartItems.length > 0 && !isExpanded}>
+        {/* Mobile bottom bar */}
+        <Slide direction="up" in={!isExpanded && cartItems.length > 0} mountOnEnter unmountOnExit>
           <Paper
-            elevation={4}
+            elevation={3}
             onClick={handleExpandClick}
             sx={{
               position: 'fixed',
               bottom: 0,
               left: 0,
               right: 0,
-              p: 2,
-              backgroundColor: '#fff',
-              borderTopLeftRadius: '16px',
-              borderTopRightRadius: '16px',
-              borderTop: '1px solid rgba(0, 0, 0, 0.12)',
-              cursor: 'pointer',
               zIndex: theme.zIndex.drawer + 2,
+              p: 2,
+              cursor: 'pointer'
             }}
           >
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-              <Box>
-                <Typography variant="subtitle1" color="text.secondary">
-                  {totalQuantity} {totalQuantity === 1 ? 'item' : 'items'}
-                </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Badge 
+                  badgeContent={totalQuantity} 
+                  color="error"
+                  sx={{
+                    '& .MuiBadge-badge': {
+                      backgroundColor: '#DB0007',
+                      color: '#FFFFFF',
+                    }
+                  }}
+                >
+                  <CartIcon />
+                </Badge>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                  Total: ${total.toFixed(2)}
+                  ${total.toFixed(2)}
                 </Typography>
               </Box>
               <IconButton>
-                <ExpandIcon sx={{ 
-                  transform: isExpanded ? 'rotate(180deg)' : 'none',
-                  transition: 'transform 0.3s',
-                  color: '#FFC72C'
-                }} />
+                <ExpandIcon sx={{ color: '#FFC72C' }} />
               </IconButton>
             </Box>
-            <Button
-              fullWidth
-              variant="contained"
-              size="large"
-              startIcon={<CheckoutIcon />}
-              onClick={(e) => {
-                e.stopPropagation();
-                // Handle checkout
-              }}
-              sx={{ 
-                backgroundColor: '#FFC72C',
-                color: '#000000',
-                fontWeight: 'bold',
-                '&:hover': {
-                  backgroundColor: '#FFB700',
-                }
-              }}
-            >
-              CHECKOUT
-            </Button>
           </Paper>
         </Slide>
 
-        {/* Expandable Cart Items */}
+        {/* Full cart drawer */}
         <SwipeableDrawer
           anchor="bottom"
           open={isExpanded}
           onClose={() => setIsExpanded(false)}
-          onOpen={() => setIsExpanded(true)}
-          disableSwipeToOpen
-          PaperProps={{
-            sx: {
-              height: '80vh',
+          sx={{
+            '& .MuiDrawer-paper': {
+              height: '90vh',
               borderTopLeftRadius: '16px',
               borderTopRightRadius: '16px',
-              pb: '120px', // Space for bottom bar
             }
           }}
         >
-          <Box sx={{ p: 2 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-              <Typography variant="h6">Your Cart ({totalQuantity} items)</Typography>
-              <IconButton onClick={() => setIsExpanded(false)}>
-                <CloseIcon />
-              </IconButton>
-            </Box>
-            
-            <Box sx={{ maxHeight: 'calc(80vh - 200px)', overflowY: 'auto' }}>
-              {cartItems.map((item) => (
-                <CartItem key={item.id} item={item} />
-              ))}
-            </Box>
-
-            <OrderSummary subtotal={subtotal} tax={tax} total={total} />
-          </Box>
+          {cartContent}
         </SwipeableDrawer>
       </>
     );
   }
 
-  // Desktop version
+  // Desktop layout
   return (
-    <Drawer
-      anchor="right"
-      open={open}
-      onClose={onClose}
-      PaperProps={{
-        sx: {
-          width: 400,
-          p: 2,
-        }
-      }}
-    >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h6">Your Cart ({totalQuantity} items)</Typography>
-        <IconButton onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      </Box>
-
-      <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
-        {cartItems.map((item) => (
-          <CartItem key={item.id} item={item} />
-        ))}
-      </Box>
-
-      <Divider sx={{ my: 2 }} />
-      <OrderSummary subtotal={subtotal} tax={tax} total={total} />
-      
-      <Button
-        fullWidth
-        variant="contained"
-        size="large"
-        startIcon={<CheckoutIcon />}
-        sx={{ 
-          mt: 2,
-          backgroundColor: '#FFC72C',
-          color: '#000000',
-          fontWeight: 'bold',
-          '&:hover': {
-            backgroundColor: '#FFB700',
-          }
-        }}
-      >
-        CHECKOUT
-      </Button>
-    </Drawer>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      {cartContent}
+    </Box>
   );
 };
 
