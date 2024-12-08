@@ -1,92 +1,130 @@
-import { useState, useEffect } from 'react';
-import { Tabs, Tab, Box, useTheme, useMediaQuery } from '@mui/material';
+import React from 'react';
+import { 
+  Box, 
+  Typography, 
+  useTheme, 
+  useMediaQuery, 
+  Tabs, 
+  Tab 
+} from '@mui/material';
 
-const CategoryTabs = ({ categories, selectedCategory, onCategoryChange }) => {
-  const [selectedTab, setSelectedTab] = useState(0);
+const CategoryTabs = ({ 
+  categories, 
+  selectedCategory, 
+  onCategoryChange,
+  categoryRefs 
+}) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
-  useEffect(() => {
-    // Update selectedTab when selectedCategory changes from parent
-    const index = categories.indexOf(selectedCategory);
-    if (index !== -1) {
-      setSelectedTab(index);
+  const handleCategoryClick = (category) => {
+    onCategoryChange(category);
+    if (categoryRefs && categoryRefs[category]) {
+      categoryRefs[category].current.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
     }
-  }, [selectedCategory, categories]);
-
-  const handleChange = (event, newValue) => {
-    setSelectedTab(newValue);
-    onCategoryChange(categories[newValue]);
   };
 
-  return (
-    <Box sx={{ 
-      width: isDesktop ? '280px' : '100%',
-      bgcolor: 'background.paper',
-      ...(isDesktop ? {
+  const handleChange = (event, newValue) => {
+    handleCategoryClick(categories[newValue]);
+  };
+
+  if (isDesktop) {
+    return (
+      <Box sx={{ 
+        width: '15%',
+        bgcolor: 'background.paper',
         position: 'sticky',
         top: 64,
         height: 'calc(100vh - 64px)',
-        overflowY: 'auto',
-        borderRight: '1px solid rgba(0, 0, 0, 0.12)',
-      } : {
-        borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
-      })
+        overflowY: 'auto'
+      }}>
+        {categories.map((category) => (
+          <Box 
+            key={category}
+            sx={{ 
+              position: 'relative',
+              borderLeft: selectedCategory === category 
+                ? '4px solid #FFC72C' 
+                : '4px solid transparent',
+              transition: 'border-left-color 0.2s ease'
+            }}
+          >
+            <Box
+              onClick={() => handleCategoryClick(category)}
+              sx={{
+                p: 2,
+                cursor: 'pointer',
+                fontWeight: selectedCategory === category ? 'bold' : 'normal',
+                color: selectedCategory === category ? '#000000' : 'inherit',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                }
+              }}
+            >
+              {category}
+            </Box>
+          </Box>
+        ))}
+      </Box>
+    );
+  }
+
+  // Mobile View
+  return (
+    <Box sx={{ 
+      width: '100%', 
+      position: 'sticky',
+      top: 0, 
+      zIndex: 10, 
+      bgcolor: 'background.paper',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)', // For Safari support
+      backgroundColor: 'rgba(255, 255, 255, 0.8)' // Slightly transparent background
     }}>
-      <Tabs 
-        value={selectedTab} 
+      <Tabs
+        value={categories.indexOf(selectedCategory)}
         onChange={handleChange}
-        variant={isDesktop ? "standard" : "scrollable"}
+        variant="scrollable"
         scrollButtons="auto"
         allowScrollButtonsMobile
-        orientation={isDesktop ? "vertical" : "horizontal"}
         sx={{
-          '& .MuiTab-root': {
-            color: '#000000',
-            fontSize: '0.875rem',
-            minHeight: isDesktop ? '48px' : '40px',
-            minWidth: isDesktop ? '280px' : '120px',
-            padding: isDesktop ? '12px 24px' : '6px 16px',
-            textTransform: 'none',
-            fontWeight: 500,
-            alignItems: 'center',
-            justifyContent: 'center',
-            display: 'flex',
-            '&.Mui-selected': {
-              color: '#000000',
-              fontWeight: 700,
-              backgroundColor: isDesktop ? 'rgba(255, 199, 44, 0.08)' : 'transparent',
-            }
+          width: '100%',
+          '& .MuiTabs-scroller': {
+            width: '100%'
+          },
+          '& .MuiTabs-flexContainer': {
+            width: '100%',
+            justifyContent: 'space-between'
           },
           '& .MuiTabs-indicator': {
             backgroundColor: '#FFC72C',
-            ...(isDesktop ? {
-              right: 'auto',
-              left: 0,
-              width: '4px'
-            } : {
-              bottom: 0,
-              height: '3px'
-            })
+            height: '4px'
           },
-          ...(isDesktop ? {
-            '& .MuiTabs-flexContainer': {
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'column'
+          '& .MuiTab-root': {
+            width: 'auto',
+            maxWidth: 'none',
+            textTransform: 'none',
+            minWidth: 'auto',
+            padding: '12px 16px',
+            color: 'rgba(0, 0, 0, 0.6)',
+            '&:hover': {
+              backgroundColor: 'rgba(0, 0, 0, 0.1)'
+            },
+            '&.Mui-selected': {
+              color: '#000000',
+              fontWeight: 'bold'
             }
-          } : {
-            minHeight: '40px',
-            height: '40px'
-          })
+          }
         }}
       >
-        {categories.map((category, index) => (
+        {categories.map((category) => (
           <Tab 
-            key={category}
-            label={category}
-            id={`menu-tab-${index}`}
-            aria-controls={`menu-tabpanel-${index}`}
+            key={category} 
+            label={category} 
           />
         ))}
       </Tabs>

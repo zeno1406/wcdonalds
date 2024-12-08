@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Box, CssBaseline } from '@mui/material';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Box, CssBaseline, ThemeProvider } from '@mui/material';
 import Navbar from './components/Layout/Navbar';
-import Menu from './pages/Menu';
-import Cart from './pages/Cart';
-import Checkout from './pages/Checkout';
 import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
+import theme from './theme';
+import { routes } from './routes/routes';
 
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -16,36 +16,41 @@ function App() {
 
   return (
     <Router>
-      <CartProvider>
-        <CssBaseline />
-        <Box sx={{ 
-          display: 'flex', 
-          flexDirection: 'column',
-          minHeight: '100vh'
-        }}>
-          <Navbar onCartClick={handleCartToggle} />
-          <Box component="main" sx={{ 
-            flexGrow: 1,
-            pt: '64px', // height of AppBar
-          }}>
-            <Routes>
-              {/* Redirect root path to menu */}
-              <Route path="/" element={<Navigate to="/menu" replace />} />
-              <Route 
-                path="/menu" 
-                element={
-                  <Menu 
-                    isCartOpen={isCartOpen} 
-                    setIsCartOpen={setIsCartOpen}
-                  />
-                } 
-              />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-            </Routes>
-          </Box>
-        </Box>
-      </CartProvider>
+      <ThemeProvider theme={theme}>
+        <AuthProvider>
+          <CartProvider>
+            <CssBaseline />
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: 'column',
+              minHeight: '100vh'
+            }}>
+              <Navbar onCartClick={handleCartToggle} />
+              <Box component="main" sx={{ 
+                flexGrow: 1,
+                pt: '64px', // height of AppBar
+              }}>
+                <Routes>
+                  {routes.map(route => (
+                    <Route
+                      key={route.path}
+                      path={route.path}
+                      element={
+                        route.path === '/menu' 
+                          ? React.cloneElement(route.element, { 
+                              isCartOpen, 
+                              setIsCartOpen 
+                            })
+                          : route.element
+                      }
+                    />
+                  ))}
+                </Routes>
+              </Box>
+            </Box>
+          </CartProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </Router>
   );
 }

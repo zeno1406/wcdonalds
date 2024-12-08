@@ -11,13 +11,17 @@ import {
   SwipeableDrawer,
   Badge
 } from '@mui/material';
-import {ShoppingBag as CartIcon, KeyboardArrowUp as ExpandIcon } from '@mui/icons-material';
+import { 
+  ShoppingBag as CartIcon, 
+  KeyboardArrowUp as ExpandIcon,
+  Close as CloseIcon 
+} from '@mui/icons-material';
 import { useCart } from '../../context/CartContext';
 import CartItem from './CartItem';
 import OrderSummary from './OrderSummary';
 import { useState } from 'react';
 
-const CartDrawer = () => {
+const CartDrawer = ({ open, onClose }) => {
   const { cartItems, getCartTotal } = useCart();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -30,7 +34,7 @@ const CartDrawer = () => {
   // Calculate total quantity of all items
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-  const handleExpandClick = ({open, onClose}) => {
+  const handleExpandClick = () => {
     setIsExpanded(!isExpanded);
   };
 
@@ -48,6 +52,11 @@ const CartDrawer = () => {
         <Typography variant="h6" fontWeight="bold">
           Your Cart
         </Typography>
+        {!isMobile && (
+          <IconButton onClick={onClose} size="small">
+            <CloseIcon />
+          </IconButton>
+        )}
       </Box>
 
       <Box sx={{ 

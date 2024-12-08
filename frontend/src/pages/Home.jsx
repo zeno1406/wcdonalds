@@ -1,95 +1,261 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
   Button,
   Box,
-  Grid,
+  TextField,
   Paper,
+  IconButton,
+  InputAdornment,
+  Link,
+  Alert,
+  Divider,
 } from '@mui/material';
 import {
-  RestaurantMenu as MenuIcon,
-  ShoppingCart as CartIcon,
+  Visibility,
+  VisibilityOff,
+  Email as EmailIcon,
+  Lock as LockIcon,
+  Person as PersonIcon,
 } from '@mui/icons-material';
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { login, register } = useAuth();
+  const [error, setError] = useState('');
+  const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    confirmPassword: '',
+  });
 
-  const features = [
-    {
-      icon: <MenuIcon sx={{ fontSize: 40 }} />,
-      title: 'Browse Menu',
-      description: 'Explore our delicious menu items',
-      action: () => navigate('/menu'),
-    },
-    {
-      icon: <CartIcon sx={{ fontSize: 40 }} />,
-      title: 'View Cart',
-      description: 'Check your current order',
-      action: () => navigate('/cart'),
-    },
-  ];
+  const handleChange = (prop) => (event) => {
+    setFormData({ ...formData, [prop]: event.target.value });
+    setError(''); // Clear error when user types
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    
+    if (isLogin) {
+      const result = login(formData.username, formData.password);
+      if (result.success) {
+        navigate('/menu');
+      } else {
+        setError('Invalid username or password');
+      }
+    } else {
+      // Sign up validation
+      if (formData.password !== formData.confirmPassword) {
+        setError('Passwords do not match');
+        return;
+      }
+      
+      const result = register(formData.username, formData.password);
+      if (result.success) {
+        // Auto login after successful registration
+        login(formData.username, formData.password);
+        navigate('/menu');
+      } else {
+        setError(result.error || 'Username already exists');
+      }
+    }
+  };
+
+  const switchMode = () => {
+    setIsLogin(!isLogin);
+    setError('');
+    setFormData({
+      username: '',
+      password: '',
+      confirmPassword: '',
+    });
+  };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 8 }}>
-      <Box sx={{ textAlign: 'center', mb: 8 }}>
-        <Typography variant="h3" component="h1" gutterBottom>
-          Welcome to WcDonald's
-        </Typography>
-        <Typography variant="h5" color="text.secondary" sx={{ mb: 4 }}>
-          Fast, efficient, and delicious ordering system
-        </Typography>
-        <Button
-          variant="contained"
-          size="large"
-          startIcon={<MenuIcon />}
-          onClick={() => navigate('/menu')}
-          sx={{ mt: 2 }}
+    <Container maxWidth="sm" sx={{ 
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      py: 8 
+    }}>
+      <Paper 
+        elevation={3}
+        sx={{
+          p: 4,
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography 
+          variant="h4" 
+          component="h1" 
+          gutterBottom
+          sx={{ 
+            fontWeight: 'bold',
+            color: '#DB0007',
+            mb: 3
+          }}
         >
-          Order Now
-        </Button>
-      </Box>
+          WcDonald's
+        </Typography>
 
-      <Grid container spacing={4} justifyContent="center">
-        {features.map((feature, index) => (
-          <Grid item xs={12} sm={6} key={index}>
-            <Paper
-              sx={{
-                p: 4,
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-                cursor: 'pointer',
-                transition: '0.3s',
-                '&:hover': {
-                  transform: 'translateY(-8px)',
-                  boxShadow: 3,
-                },
+        <Typography variant="h6" gutterBottom>
+          {isLogin ? 'Sign in to your account' : 'Create an account'}
+        </Typography>
+
+        {error && (
+          <Alert severity="error" sx={{ width: '100%', mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+
+        <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', mt: 2 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            autoFocus
+            value={formData.username}
+            onChange={handleChange('username')}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <PersonIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type={showPassword ? 'text' : 'password'}
+            id="password"
+            autoComplete={isLogin ? 'current-password' : 'new-password'}
+            value={formData.password}
+            onChange={handleChange('password')}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <LockIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={toggleShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          {!isLogin && (
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              type={showPassword ? 'text' : 'password'}
+              id="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange('confirmPassword')}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LockIcon />
+                  </InputAdornment>
+                ),
               }}
-              onClick={feature.action}
-            >
-              <Box sx={{ color: 'primary.main', mb: 2 }}>
-                {feature.icon}
-              </Box>
-              <Typography variant="h5" gutterBottom>
-                {feature.title}
-              </Typography>
-              <Typography color="text.secondary">
-                {feature.description}
-              </Typography>
-              <Button
-                variant="contained"
-                sx={{ mt: 3 }}
-                onClick={feature.action}
-              >
-                {feature.title}
-              </Button>
-            </Paper>
-          </Grid>
-        ))}
-      </Grid>
+            />
+          )}
+          
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ 
+              mt: 3, 
+              mb: 2,
+              bgcolor: '#FFC72C',
+              color: '#000000',
+              '&:hover': {
+                bgcolor: '#FFB700',
+              }
+            }}
+          >
+            Sign In
+          </Button>
+
+          <Typography variant="body2" sx={{ mb: 3, whiteSpace: 'nowrap' }}>
+            {isLogin ? 'Already have an account?' : 'Don\'t have an account?'}
+            <Link
+            variant="body2"
+            onClick={switchMode}
+            sx={{
+              ml: 0.5,
+              color: '#DB0007',
+              textDecoration: 'none',
+              '&:hover': {
+                textDecoration: 'underline',
+              }
+            }}
+          >
+            Sign Up
+          </Link>
+          </Typography>
+          
+
+          <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', mb: 3 }}>
+            <Divider sx={{ flexGrow: 1 }} />
+            <Typography variant="body2" sx={{ mx: 2 }}>
+              OR
+            </Typography>
+            <Divider sx={{ flexGrow: 1 }} />
+          </Box>
+
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => navigate('/menu')}
+            sx={{
+              backgroundColor: '#DB0007',
+              color: '#000000',
+              borderColor: '#000000',
+              '&:hover': {
+                borderColor: '#000000',
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+              }
+            }}
+          >
+            Continue as Guest
+          </Button>
+        </Box>
+      </Paper>
     </Container>
   );
 };

@@ -21,7 +21,7 @@ const theme = createTheme({
     h4: {
       fontWeight: 600,
     },
-    h6: {
+    h5: {
       fontWeight: 600,
     },
   },
@@ -38,6 +38,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 12,
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
         },
       },
     },
