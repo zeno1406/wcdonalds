@@ -13,6 +13,7 @@ import CartDrawer from '../components/Cart/CartDrawer';
 import Navbar from '../components/Layout/Navbar';
 import { useCart } from '../context/CartContext';
 import { menuData } from '../data/menuData';
+import Chat from '../components/Chat/Chat';
 
 const Menu = () => {
   const categories = Object.keys(menuData);
@@ -218,6 +219,7 @@ const Menu = () => {
           />
         )}
       </Box>
+      <Chat />
     </Box>
   );
 };
