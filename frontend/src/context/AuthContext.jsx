@@ -12,6 +12,11 @@ const users = {
     username: 'admin',
     password: 'admin',
     role: 'admin'
+  },
+  user1: {
+    username: 'bubudangyeu',
+    password: '123456',
+    role: 'user'
   }
 };
 
