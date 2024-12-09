@@ -77,36 +77,10 @@ export const validationRules = {
 
 // Discount Codes
 export const discountCodes = {
-  WELCOME10: {
-    code: 'WELCOME10',
-    description: 'Welcome discount for new customers',
-    discountPercent: 10,
-    minOrderValue: 100000,
-    maxDiscount: 50000,
-    validUntil: '2024-12-31'
-  },
-  FREESHIP: {
-    code: 'FREESHIP',
-    description: 'Free shipping on orders over 200k',
-    discountAmount: 15000,
-    minOrderValue: 200000,
-    type: 'shipping',
-    validUntil: '2024-12-31'
-  },
-  SPECIAL20: {
-    code: 'SPECIAL20',
-    description: 'Special discount for orders over 500k',
-    discountPercent: 20,
-    minOrderValue: 500000,
-    maxDiscount: 200000,
-    validUntil: '2024-12-31'
-  },
-  COMBO50: {
-    code: 'COMBO50',
-    description: '50k off on combo orders',
-    discountAmount: 50000,
-    minOrderValue: 300000,
-    type: 'fixed',
-    validUntil: '2024-12-31'
+  WCD10: {
+    code: 'WCD10',
+    discount: 0.1,
+    requiresAuth: true,
+    description: '10% off for logged-in users'
   }
 };
