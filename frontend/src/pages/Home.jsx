@@ -7,16 +7,11 @@ import {
   Box,
   TextField,
   Paper,
-  IconButton,
-  InputAdornment,
   Link,
   Alert,
   Divider,
 } from '@mui/material';
 import {
-  Visibility,
-  VisibilityOff,
-  Email as EmailIcon,
   Lock as LockIcon,
   Person as PersonIcon,
 } from '@mui/icons-material';
@@ -134,13 +129,6 @@ const Home = () => {
             autoFocus
             value={formData.username}
             onChange={handleChange('username')}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <PersonIcon />
-                </InputAdornment>
-              ),
-            }}
           />
           <TextField
             margin="normal"
@@ -153,24 +141,6 @@ const Home = () => {
             autoComplete={isLogin ? 'current-password' : 'new-password'}
             value={formData.password}
             onChange={handleChange('password')}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockIcon />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={toggleShowPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
           />
 
           {!isLogin && (
@@ -180,17 +150,10 @@ const Home = () => {
               fullWidth
               name="confirmPassword"
               label="Confirm Password"
-              type={showPassword ? 'text' : 'password'}
+              type="password"
               id="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange('confirmPassword')}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <LockIcon />
-                  </InputAdornment>
-                ),
-              }}
             />
           )}
           
@@ -212,7 +175,7 @@ const Home = () => {
           </Button>
 
           <Typography variant="body2" sx={{ mb: 3, whiteSpace: 'nowrap' }}>
-            {isLogin ? 'Already have an account?' : 'Don\'t have an account?'}
+            {isLogin ?  'Don\'t have an account?' : 'Already have an account?'}
             <Link
             variant="body2"
             onClick={switchMode}
@@ -225,7 +188,7 @@ const Home = () => {
               }
             }}
           >
-            Sign Up
+            {isLogin ? 'Sign Up' : 'Sign In'}
           </Link>
           </Typography>
           
