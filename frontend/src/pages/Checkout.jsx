@@ -26,6 +26,7 @@ import {
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import CartItem from '../components/Cart/CartItem';
 import OrderSummary from '../components/Cart/OrderSummary';
 import { menuData } from '../data/menuData';
@@ -45,6 +46,8 @@ const Checkout = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
   const [paymentStep, setPaymentStep] = useState('options'); // options, qr, processing, thankyou
+  const [qrCode, setQRCode] = useState(null);
+  const [isQRDialogOpen, setIsQRDialogOpen] = useState(false);
 
   const subtotal = getCartTotal();
   const tax = subtotal * 0.1;
@@ -146,6 +149,28 @@ const Checkout = () => {
     addToCart(item);
     setSuccessMessage(`Added ${item.name} to your order!`);
     setShowSuccessMessage(true);
+  };
+
+  const generateVietQRPayment = async () => {
+    try {
+      const token = localStorage.getItem('token'); // Assuming you store JWT
+      const response = await axios.post('/api/payments/qr', {
+        amount: getCartTotal(),
+        items: cartItems
+      }, {
+        headers: { 
+          'Authorization': `Bearer ${token}` 
+        }
+      });
+
+      if (response.data.success) {
+        setQRCode(response.data.data.qrUrl);
+        setIsQRDialogOpen(true);
+      }
+    } catch (error) {
+      console.error('QR Generation Error:', error);
+      // Handle error (show snackbar, etc.)
+    }
   };
 
   // Redirect to cart if it's empty
@@ -337,6 +362,26 @@ const Checkout = () => {
                 <BankIcon sx={{ fontSize: 40 }} />
                 <Typography>Bank Transfer</Typography>
               </Button>
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={generateVietQRPayment}
+                sx={{ 
+                  py: 3,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 1,
+                  borderColor: '#000000',
+                  color: '#000000',
+                  '&:hover': {
+                    borderColor: '#000000',
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                  }
+                }}
+              >
+                <QrCodeIcon sx={{ fontSize: 40 }} />
+                <Typography>Pay with VietQR</Typography>
+              </Button>
             </Box>
           )}
 
@@ -349,7 +394,7 @@ const Checkout = () => {
               p: 4
             }}>
               <img 
-                src="/qr-code.png" 
+                src="frontend\public\images\qr_payment.jpg" 
                 alt="QR Code for payment" 
                 style={{ width: 200, height: 200 }}
               />
@@ -403,6 +448,22 @@ const Checkout = () => {
                 Thank you for choosing WcDonald's
               </Typography>
             </Box>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog 
+        open={isQRDialogOpen} 
+        onClose={() => setIsQRDialogOpen(false)}
+      >
+        <DialogTitle>Scan to Pay</DialogTitle>
+        <DialogContent>
+          {qrCode && (
+            <img 
+              src={qrCode} 
+              alt="Payment QR Code" 
+              style={{ width: '100%', maxWidth: '300px' }} 
+            />
           )}
         </DialogContent>
       </Dialog>

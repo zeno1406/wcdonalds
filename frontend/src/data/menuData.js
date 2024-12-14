@@ -4,7 +4,7 @@ export const menuData = {
       id: "ff1",
       name: "Big Mac®",
       price: 5.99,
-      description: "Mouthwatering perfection with two 100% beef patties, special sauce, lettuce, cheese, pickles, onions on a sesame seed bun.",
+      description: "Mouthwatering perfection with two 100% beef patties.",
       image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-Big-Mac-1:1-4-product-tile-desktop"
     },
     {
@@ -33,7 +33,7 @@ export const menuData = {
       name: "McFlurry® with OREO® Cookies",
       price: 3.99,
       description: "Vanilla soft serve with OREO® cookie pieces mixed throughout.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-oreo-mcflurry:1-4-product-tile-desktop"
+      image: "/public/images/t-oreo-mcflurry-snack_1-4-product-tile-desktop.jpg"
     },
     {
       id: "ff6",
@@ -63,14 +63,14 @@ export const menuData = {
       name: "Double Big Mac®",
       price: 7.99,
       description: "Four beef patties, special sauce, lettuce, cheese, pickles, onions on a sesame seed bun.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-Double-Big-Mac-1:1-4-product-tile-desktop"
+      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-qpc-deluxe-burger:1-4-product-tile-desktop"
     },
     {
       id: "b4",
       name: "Big Mac® Bacon",
       price: 6.79,
       description: "Classic Big Mac® topped with crispy bacon strips.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-Big-Mac-Bacon:1-4-product-tile-desktop"
+      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-Hamburger:1-4-product-tile-desktop"
     },
     {
       id: "b5",
@@ -93,21 +93,21 @@ export const menuData = {
       name: "McCrispy™",
       price: 5.49,
       description: "Crispy chicken fillet topped with crinkle cut pickles on a potato roll.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-mccrispy:1-4-product-tile-desktop"
+      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-crispy-chicken-sandwich:1-4-product-tile-desktop"
     },
     {
       id: "cf2",
       name: "Deluxe McCrispy™",
       price: 5.99,
       description: "Crispy chicken fillet with tomato, mayo, lettuce on a potato roll.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-deluxe-mccrispy:1-4-product-tile-desktop"
+      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-crispy-chicken-sandwich:1-4-product-tile-desktop"
     },
     {
       id: "cf3",
       name: "Spicy McCrispy™ Deluxe",
       price: 6.29,
       description: "Spicy crispy chicken with tomato, mayo, lettuce on a potato roll.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-spicy-deluxe-mccrispy:1-4-product-tile-desktop"
+      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-crispy-chicken-sandwich:1-4-product-tile-desktop"
     },
     {
       id: "cf4",
@@ -172,7 +172,7 @@ export const menuData = {
       name: "Spicy Chicken McNuggets®",
       price: 4.99,
       description: "Breaded chicken with a spicy tempura coating.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-spicy-chicken-mcnuggets:1-4-product-tile-desktop"
+      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-Chicken-McNuggets-4pc:1-4-product-tile-desktop"
     }
   ],
   "Fries & Sides": [
@@ -209,14 +209,14 @@ export const menuData = {
       name: "Side Salad",
       price: 2.49,
       description: "A blend of premium lettuces, topped with fresh vegetables.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-side-salad:1-4-product-tile-desktop"
+      image: "/public/images/mcdonalds-crispy-chicken-salad_1-4-product-tile-desktop.jpg"
     },
     {
       id: "fs6",
       name: "Hash Browns",
       price: 1.89,
       description: "Crispy, golden brown hash browns for breakfast.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-Hash-Browns:1-4-product-tile-desktop"
+      image: "/public/images/hashbrown.jpg"
     }
   ],
   "Happy Meal®": [
@@ -225,42 +225,42 @@ export const menuData = {
       name: "Hamburger Happy Meal®",
       price: 4.99,
       description: "Hamburger with kids fries, apple slices, and choice of beverage.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-Hamburger-Happy-Meal:1-4-product-tile-desktop"
+      image: "/public/images/mcdonalds-hamburger-happy-meal-apples-hero_1-4-product-tile-desktop.avif"
     },
     {
       id: "hm2",
       name: "4 Piece McNuggets® Happy Meal®",
       price: 5.49,
       description: "Four piece Chicken McNuggets® with kids fries, apple slices, and choice of beverage.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-Chicken-McNuggets-Happy-Meal:1-4-product-tile-desktop"
+      image: "/public/images/mcdonalds-hamburger-happy-meal-apples-hero_1-4-product-tile-desktop.avif"
     },
     {
       id: "hm3",
       name: "6 Piece McNuggets® Happy Meal®",
       price: 6.49,
       description: "Six piece Chicken McNuggets® with kids fries, apple slices, and choice of beverage.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-Chicken-McNuggets-Happy-Meal-6pc:1-4-product-tile-desktop"
+      image: "/public/images/mcdonalds-hamburger-happy-meal-apples-hero_1-4-product-tile-desktop.avif"
     },
     {
       id: "hm4",
       name: "Cheeseburger Happy Meal®",
       price: 5.29,
       description: "Cheeseburger with kids fries, apple slices, and choice of beverage.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-Cheeseburger-Happy-Meal:1-4-product-tile-desktop"
+      image: "/public/images/mcdonalds-hamburger-happy-meal-apples-hero_1-4-product-tile-desktop.avif"
     },
     {
       id: "hm5",
       name: "McDouble® Happy Meal®",
       price: 5.99,
       description: "McDouble® with kids fries, apple slices, and choice of beverage.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-McDouble-Happy-Meal:1-4-product-tile-desktop"
+      image: "/public/images/mcdonalds-hamburger-happy-meal-apples-hero_1-4-product-tile-desktop.avif"
     },
     {
       id: "hm6",
       name: "Chicken McNuggets® Happy Meal® with Apple Slices",
       price: 5.49,
       description: "Four piece Chicken McNuggets® with apple slices and choice of beverage.",
-      image: "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-Chicken-McNuggets-Happy-Meal-Apple-Slices:1-4-product-tile-desktop"
+      image: "/public/images/mcdonalds-hamburger-happy-meal-apples-hero_1-4-product-tile-desktop.avif"
     }
   ]
 };
