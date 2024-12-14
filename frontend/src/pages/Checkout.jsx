@@ -394,7 +394,7 @@ const Checkout = () => {
               p: 4
             }}>
               <img 
-                src="frontend\public\images\qr_payment.jpg" 
+                src="/images/qr_payment.jpg" 
                 alt="QR Code for payment" 
                 style={{ width: 200, height: 200 }}
               />
