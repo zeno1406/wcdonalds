@@ -33,7 +33,7 @@ export const menuData = {
       name: "McFlurry® with OREO® Cookies",
       price: 3.99,
       description: "Vanilla soft serve with OREO® cookie pieces mixed throughout.",
-      image: "/public/images/t-oreo-mcflurry-snack_1-4-product-tile-desktop.jpg"
+      image: "/images/t-oreo-mcflurry-snack_1-4-product-tile-desktop.jpg"
     },
     {
       id: "ff6",
